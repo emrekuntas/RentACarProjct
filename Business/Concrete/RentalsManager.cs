@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -33,6 +35,7 @@ namespace Business.Concrete
             return new ErrorDataResult<Rentals>(Messages.DataNotFound);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rentals entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
@@ -53,6 +56,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalsDeleted);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rentals entity)
         {
             if (entity == null)

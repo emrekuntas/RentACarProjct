@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -37,6 +39,7 @@ namespace Business.Concrete
             return new ErrorDataResult<Customer>(Messages.DataNotFound);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
@@ -46,7 +49,7 @@ namespace Business.Concrete
             _customerDal.Add(entity);
             return new SuccessResult(Messages.CustomerAdded);
         }
-       
+
         public IResult Delete(Customer entity)
         {
             if (entity == null)
@@ -54,10 +57,11 @@ namespace Business.Concrete
             _customerDal.Delete(entity);
             return new SuccessResult(Messages.CustomerDeleted);
         }
-        
+
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Update(Customer entity)
         {
-            if (entity == null) 
+            if (entity == null)
                 return new ErrorResult(Messages.DataCantUpdate);
             _customerDal.Update(entity);
             return new SuccessResult(Messages.CustomerUpdated);

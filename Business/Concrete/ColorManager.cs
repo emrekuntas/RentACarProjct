@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -35,6 +37,8 @@ namespace Business.Concrete
                 return new ErrorDataResult<Color>(Messages.DataNotFound);
             return new SuccessDataResult<Color>(result);
         }
+        
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
@@ -46,6 +50,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ColorAdded);
 
         }
+        
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Color entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantUpdate);

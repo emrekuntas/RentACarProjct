@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -16,10 +18,8 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-
         public IDataResult<List<Brand>> GetAll()
         {
-
             var result = _brandDal.GetAll();
             if (result == null) return new ErrorDataResult<List<Brand>>(Messages.DataNotFound);
             if (DateTime.Now.Hour == 12)
@@ -35,6 +35,8 @@ namespace Business.Concrete
                 return new ErrorDataResult<Brand>(Messages.DataNotFound);
             return new SuccessDataResult<Brand>(result);
         }
+        
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
@@ -45,6 +47,10 @@ namespace Business.Concrete
             _brandDal.Add(entity);
             return new SuccessResult(Messages.BrandAdded);
         }
+        [ValidationAspect(typeof(BrandValidator))]
+       
+        
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantUpdate);

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -34,6 +36,7 @@ namespace Business.Concrete
 
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
@@ -51,7 +54,8 @@ namespace Business.Concrete
             _userDal.Delete(entity);
             return new SuccessResult(Messages.UserDeleted);
         }
-
+        
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantUpdate);

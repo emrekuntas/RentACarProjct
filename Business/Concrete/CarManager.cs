@@ -6,6 +6,9 @@ using Entities.Concrete;
 using Entities.Dto;
 using System;
 using System.Collections.Generic;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
+using Core.CrossCuttingConcerns.Validation;
 
 namespace Business.Concrete
 {
@@ -63,20 +66,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(result);
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car entity)
         {
             if (entity == null) return new ErrorResult(Messages.DataCantSave);
-            if (entity.CarName.Length < 2)
-            {
-                return new ErrorResult(Messages.CarNameMinTwoCharacters);
-            }
-            if (entity.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.PriceBiggerThanZero);
-            }
             _carDal.Add(entity);
             return new SuccessResult(Messages.CarAdded);
         }
+        
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car entity)
         {
             if (entity == null)
@@ -84,6 +82,7 @@ namespace Business.Concrete
             _carDal.Update(entity);
             return new SuccessResult(Messages.CarUpdated);
         }
+        
         public IResult Delete(Car entity)
         {
             if (entity == null)
