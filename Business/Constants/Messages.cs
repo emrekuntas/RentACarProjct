@@ -53,5 +53,14 @@
         public static string RentalsDeleted = "Araba Kiralama Silindi";
         public static string RentalsUpdated = "Araba Kiralama Güncellendi";
         public static string CarNotSuitable = "Araba Zaten Kiralanmış";
+
+        //Car Images
+        public static string ImagesListed = "Resimler Listelendi";
+        public static string ImageAdded = "Resim Eklendi.";
+        public static string ImageDeleted = "Resim Silindi";
+        public static string ImageUpdated = "Resim Güncellendi";
+        public static string ImageCountExceeded = "MAksimum 5 resim eklenebilir";
+
+        
     }
 }
